@@ -29,10 +29,17 @@ export default function Cannon({position}) {
     useFrame((state,delta) => {
         //Height
         //height mouse (top)
-        
-        yRef.current.rotation.x = -1.5 * mousePosition.y / height + Math.PI / 3
-        xRef
+        const calcY = -1.5 * mousePosition.y / height + Math.PI / 3
+        if (0.1 < calcY&& calcY < 0.8) {
 
+          yRef.current.rotation.x = calcY
+        }
+        const calcX = -mousePosition.x / width + 1 
+          if (0.75 > calcX && calcX > 0.25  ) {
+
+            xRef.current.rotation.y = calcX * Math.PI - Math.PI / 2
+          }
+//
     })
     return <group position={position} scale={[3,3,3]} ref={xRef}>
         {/* Wood */}

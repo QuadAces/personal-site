@@ -13,7 +13,7 @@ import { Perf } from "r3f-perf";
 import * as THREE from 'three'
 import Cannon from "./Cannon";
 function Target({colorRed,}) {
-  
+  const scale = [1.5,1.5,1.5]
   const { nodes: targetNodes, materials: targetMaterials } = useGLTF(
     "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/target/model.gltf"
   );
@@ -30,7 +30,7 @@ function Target({colorRed,}) {
   return (
     <>
       
-<group position={[0,1,0]}>
+<group position={[0,1,0]} scale={scale}>
 
           <group rotation={[Math.PI / 2, 0, 0]} position={[0,2,0]}>
             <mesh geometry={targetNodes.Cylinder015.geometry}>
