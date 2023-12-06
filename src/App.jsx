@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import "./app.css";
+import "./App.css";
 import Icon from "./Icon";
 import Target from "./Scenes/targets";
 import { Canvas, useThree } from "@react-three/fiber";
