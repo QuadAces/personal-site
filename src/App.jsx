@@ -7,6 +7,7 @@ import { Canvas, useThree } from "@react-three/fiber";
 import * as THREE from 'three'
 import { PerspectiveCamera } from "@react-three/drei";
 import Scene from "./Scenes/Scene";
+import { tSArrayType } from "@babel/types";
 function App() {
   
   //   const {innerWidth: width, innerHeight: height} = window;
@@ -54,12 +55,33 @@ function App() {
   // </motion.h1>
   //     <motion.div style={{ overflow: 'hidden' }} id='banner-full' animate={{ y: -scrollValue }}></motion.div>
   //   </div>)
+  const [
+    mousePosition,
+    setMousePosition
+  ] = useState({ x: null, y: null });
+  useEffect(() => {
+    const updateMousePosition = ev => {
+      setMousePosition({ x: ev.clientX, y: ev.clientY });
+    };
+    window.addEventListener('mousemove', updateMousePosition);
+    return () => {
+      window.removeEventListener('mousemove', updateMousePosition);
+    };
+  }, []);
+  const [trigger, setTrigger] = useState(0)
+function onClick() {
+  setTrigger((e) => e+1)
+  console.log(mousePosition.x)
+}
   return (
     <>
+    <div onClick={onClick}>
+
       <Canvas
         style={{ width: "100vw", height: "100vh" }}
         shadows
         dpr={[1, 2]}
+        
         // camera={{ fov: 50, position: [0, 0, 8] }}
         // onCreated={state => {
         //   const vec = new THREE.Vector3(0,2,0)
@@ -75,8 +97,9 @@ function App() {
         {/* <div> */}
 
         {/* </div> */}
-        <Scene></Scene>
+        <Scene trigger={trigger}></Scene>
       </Canvas>
+        </div>
     </>
   );
 }
