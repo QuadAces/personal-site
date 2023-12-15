@@ -12,7 +12,8 @@ import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { Perf } from "r3f-perf";
 import * as THREE from 'three'
 import Cannon from "./Cannon";
-function Target({colorRed,}) {
+import { RigidBody } from "@react-three/rapier";
+function Target({position, targetsWidth, targetsHeightDiff, targetSpin}) {
   const scale = [1.5,1.5,1.5]
   const { nodes: targetNodes, materials: targetMaterials } = useGLTF(
     "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/target/model.gltf"
@@ -27,19 +28,22 @@ function Target({colorRed,}) {
       // camera.position.set(0, 2, 5);
       camera.lookAt(new THREE.Vector3(0,0,0));
     }, [camera]);
-  return (
-    <>
+    const rididBodyProps = {colliders:'cuboid', type:"fixed"}
+    return (
+      <>
       
-<group position={[0,1,0]} scale={scale}>
+<group position={position} scale={scale}>
 
-          <group rotation={[Math.PI / 2, 0, 0]} position={[0,2,0]}>
+          <group rotation={[Math.PI / 2, 0, 0]} position={[0,0,0]}>
+            <RigidBody {...rididBodyProps}>
             <mesh geometry={targetNodes.Cylinder015.geometry}>
               <meshStandardMaterial
-                args={[targetMaterials["White.024"]]}
-                aoMapIntensity={0}
-                envMapIntensity={0.7}
-                color={[1, 0, 0]}
-                ></meshStandardMaterial>
+              
+              args={[targetMaterials["White.024"]]}
+              aoMapIntensity={0}
+              envMapIntensity={0.7}
+              color={[1, 0, 0]}
+              ></meshStandardMaterial>
             </mesh>
 
             <mesh
@@ -47,9 +51,12 @@ function Target({colorRed,}) {
               material={targetMaterials["White.024"]}
               material-color={[1, 1, 8]}
               />
+              </RigidBody>
           </group>
 
-          <group rotation={[Math.PI / 2, 0, 0]} position={[4,1,0]} rotation-z={Math.PI * -1.7}>
+          <group rotation={[Math.PI / 2, 0, 0]} position={[targetsWidth, -targetsHeightDiff,0]} rotation-z={-targetSpin}>
+            <RigidBody {...rididBodyProps}>
+
             <mesh geometry={targetNodes.Cylinder015.geometry}>
               <meshStandardMaterial
                 args={[targetMaterials["White.024"]]}
@@ -64,9 +71,12 @@ function Target({colorRed,}) {
               material={targetMaterials["White.024"]}
               material-color={[1, 1, 8]}
               />
+                </RigidBody>
           </group>
 
-          <group rotation={[Math.PI / 2, 0, 0]} position={[-4,1,0]} rotation-z={Math.PI * 1.7}>
+          <group rotation={[Math.PI / 2, 0, 0]} position={[-targetsWidth,-targetsHeightDiff,0]} rotation-z={targetSpin}>
+            <RigidBody {...rididBodyProps}>
+
             <mesh geometry={targetNodes.Cylinder015.geometry}>
               <meshStandardMaterial
                 args={[targetMaterials["White.024"]]}
@@ -81,6 +91,7 @@ function Target({colorRed,}) {
               material={targetMaterials["White.024"]}
               material-color={[1, 1, 8]}
               />
+              </RigidBody>
           </group>
         
               </group>

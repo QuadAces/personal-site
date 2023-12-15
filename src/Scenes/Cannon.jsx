@@ -5,7 +5,6 @@ import useWindowDimensions from "../Hooks/windowDimentions"
 
 export default function Cannon({position}) {
     const { nodes, materials } = useGLTF('https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/cannon-large/model.gltf')
-    position[2] = position[2] - 4
     const yRef = useRef()
     const xRef = useRef()
 
@@ -41,7 +40,7 @@ export default function Cannon({position}) {
           }
 //
     })
-    return <group position={position} scale={[3,3,3]} ref={xRef}>
+    return <group position={position} scale={[1,1,1]} ref={xRef}>
         {/* Wood */}
 <mesh geometry={nodes.cannonLarge_1.geometry} material={materials['wood.005']} />
 {/* Connector Thing */}

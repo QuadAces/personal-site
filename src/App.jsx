@@ -73,14 +73,18 @@ function onClick() {
   setTrigger((e) => e+1)
   console.log(mousePosition.x)
 }
+const cameraPosition = [0,0,0]
+
   return (
     <>
     <div onClick={onClick}>
 
-      <Canvas
+      <Canvas 
         style={{ width: "100vw", height: "100vh" }}
         shadows
         dpr={[1, 2]}
+        camera={{position: cameraPosition}}
+        // camera={{position: cameraPosition}}
         
         // camera={{ fov: 50, position: [0, 0, 8] }}
         // onCreated={state => {
@@ -97,7 +101,7 @@ function onClick() {
         {/* <div> */}
 
         {/* </div> */}
-        <Scene trigger={trigger}></Scene>
+        <Scene trigger={trigger} cameraPosition={cameraPosition}></Scene>
       </Canvas>
         </div>
     </>
