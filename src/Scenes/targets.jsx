@@ -1,4 +1,4 @@
-import { useRef, Suspense, useEffect, useState } from "react";
+import { useRef, Suspense, useEffect, useState, useReducer } from "react";
 import "../App.css";
 
 import { Canvas, useFrame, useThree,  } from "@react-three/fiber";
@@ -13,7 +13,42 @@ import { Perf } from "r3f-perf";
 import * as THREE from 'three'
 import Cannon from "./Cannon";
 import { RigidBody } from "@react-three/rapier";
+
+function targetDispatch(state, action) {
+
+  if (action.hit == 'left') {
+    state.left.color = [2 * state.left.hit, 0,0]
+    state.left.hit += state.left.hit
+
+  } else if (action.hit == 'middle') {
+    state.middle.color = [2* state.middle.hit,0,0]
+    state.middle.hit += state.middle.hit
+
+  } else if (action.hit == 'right') {
+
+    state.right.color = [2* state.right.hit,0,0]
+    state.right.hit += state.right.hit
+
+
+  }
+return state
+}
+
 function Target({position, targetsWidth, targetsHeightDiff, targetSpin}) {
+const [targetState, targetStateDispatch ] = useReducer(targetDispatch, {
+  left: {color: [1,0,0], hit: 1},
+  middle: {color: [1,0,0], hit: 1},
+  right: {color: [1,0,0], hit: 1},
+})
+
+
+  function onCollisionHit(ref) {
+    targetStateDispatch({
+      hit: ref.name
+    })
+    console.log('isHappening', ref.name)
+  }
+
   const scale = [1.5,1.5,1.5]
   const { nodes: targetNodes, materials: targetMaterials } = useGLTF(
     "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/target/model.gltf"
@@ -29,20 +64,27 @@ function Target({position, targetsWidth, targetsHeightDiff, targetSpin}) {
       camera.lookAt(new THREE.Vector3(0,0,0));
     }, [camera]);
     const rididBodyProps = {colliders:'cuboid', type:"fixed"}
+    const targetMiddle = useRef()
+    targetMiddle.name = 'middle'
+    const targetLeft = useRef()
+    targetLeft.name = 'left'
+    const targetRight = useRef()
+    targetRight.name = 'right'
+
     return (
       <>
       
 <group position={position} scale={scale}>
 
-          <group rotation={[Math.PI / 2, 0, 0]} position={[0,0,0]}>
-            <RigidBody {...rididBodyProps}>
-            <mesh geometry={targetNodes.Cylinder015.geometry}>
+          <group  rotation={[Math.PI / 2, 0, 0]} position={[0,0,0]} >
+            <RigidBody onCollisionEnter={() => {onCollisionHit(targetMiddle)}} {...rididBodyProps}>
+            <mesh geometry={targetNodes.Cylinder015.geometry} ref={targetMiddle}>
               <meshStandardMaterial
               
               args={[targetMaterials["White.024"]]}
               aoMapIntensity={0}
               envMapIntensity={0.7}
-              color={[1, 0, 0]}
+              color={targetState.middle.color}
               ></meshStandardMaterial>
             </mesh>
 
@@ -53,16 +95,15 @@ function Target({position, targetsWidth, targetsHeightDiff, targetSpin}) {
               />
               </RigidBody>
           </group>
-
           <group rotation={[Math.PI / 2, 0, 0]} position={[targetsWidth, -targetsHeightDiff,0]} rotation-z={-targetSpin}>
-            <RigidBody {...rididBodyProps}>
+            <RigidBody {...rididBodyProps} onCollisionExit={() => {onCollisionHit(targetRight)}}>
 
-            <mesh geometry={targetNodes.Cylinder015.geometry}>
+            <mesh geometry={targetNodes.Cylinder015.geometry} ref={targetRight}>
               <meshStandardMaterial
                 args={[targetMaterials["White.024"]]}
                 aoMapIntensity={0}
                 envMapIntensity={0.7}
-                color={[1, 0, 0]}
+                color={targetState.right.color}
                 ></meshStandardMaterial>
             </mesh>
 
@@ -75,14 +116,14 @@ function Target({position, targetsWidth, targetsHeightDiff, targetSpin}) {
           </group>
 
           <group rotation={[Math.PI / 2, 0, 0]} position={[-targetsWidth,-targetsHeightDiff,0]} rotation-z={targetSpin}>
-            <RigidBody {...rididBodyProps}>
+            <RigidBody {...rididBodyProps} onCollisionExit={() => {onCollisionHit(targetLeft)}}>
 
-            <mesh geometry={targetNodes.Cylinder015.geometry}>
+            <mesh geometry={targetNodes.Cylinder015.geometry} ref={targetLeft}>
               <meshStandardMaterial
                 args={[targetMaterials["White.024"]]}
                 aoMapIntensity={0}
                 envMapIntensity={0.7}
-                color={[1, 0, 0]}
+                color={targetState.left.color}
                 ></meshStandardMaterial>
             </mesh>
 
