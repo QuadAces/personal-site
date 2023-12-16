@@ -42,9 +42,9 @@ export default function Cannon({position}) {
     })
     return <group position={position} scale={[1,1,1]} ref={xRef}>
         {/* Wood */}
-<mesh geometry={nodes.cannonLarge_1.geometry} material={materials['wood.005']} />
+<mesh geometry={nodes.cannonLarge_1.geometry} material={materials['wood.005']}/>
 {/* Connector Thing */}
-<mesh geometry={nodes.cannonLarge_2.geometry} material={nodes.cannonLarge_2.material} />
+<mesh geometry={nodes.cannonLarge_2.geometry} material={nodes.cannonLarge_2.material}  />
 {/* Actual cannon */}
 <mesh ref={yRef} geometry={nodes.barrel_1.geometry} material={nodes.barrel_1.material} position={[0, 0.35, -0.07,]} />
 </group>

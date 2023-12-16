@@ -3,7 +3,7 @@ import { Html } from "@react-three/drei"
 import { RigidBody, } from "@react-three/rapier"
 import useWindowDimensions from "../Hooks/windowDimentions"
 
-export default function CannonBall({ mouseX, mouseY, ballPosition })
+export default function CannonBall({ mouseX, mouseY, position, scale, targetsPosition,targetWidth })
 {
     const ballRef = useRef()
 
@@ -23,15 +23,17 @@ export default function CannonBall({ mouseX, mouseY, ballPosition })
         console.log(mouseX)
         console.log((mouseX - width / 2))
         ballRef.current.applyImpulse(
-            { x: (mouseX - width / 2) / 10, y: (height /2 - mouseY ) / 10, z: -10 }
-        )
+            // { x: (mouseX - width / 2) / 10, y: (height /2 - mouseY ) / 10, z: -10 }
+        {x: ((mouseX / width) - 0.5) * targetWidth * 12.5, y: (mouseY - height)/height * (targetsPosition[2] - 0.5 * 9.81) + targetsPosition[2] / 2.2, z: targetsPosition[2] * 1.05}
+            )
     }
 
     return (
         <>
             
             <RigidBody
-        position={ballPosition}
+        position={position}
+
                 ref={ballRef}
                 name={Math.random()}
                 colliders={"ball"}
@@ -41,7 +43,7 @@ export default function CannonBall({ mouseX, mouseY, ballPosition })
                 linearDamping={1}
                 angularDamping={1}
             >
-                <mesh castShadow scale={[0.5,0.5,0.5]}>
+                <mesh castShadow scale={[scale,scale,scale]} position={position}>
                     <sphereGeometry onClick={applyImpulse} />
                     <meshNormalMaterial color="orange" />
                 </mesh>

@@ -11,16 +11,22 @@ import {useState, useEffect} from 'react'
 import { generateUUID } from "three/src/math/MathUtils";
 export default function Scene({trigger, cameraPosition}) {
  
-  
+  //TODO: set cannon ball to come out of cannon
+  //TODO: add cooldown
+  //TODO: change bloom on hit
+  //TODO: set text on hit
+  //
 
 cameraPosition = [0,0,0]
 const cannonPosition = [0,-0.75,-0.25]
-const ballPosition = cameraPosition
-const targetsPosition = [0,3,-6]
+const ballPosition = [cannonPosition[0],cannonPosition[1],cannonPosition[2]]
+//cannonPosition[0] + 3, cannonPosition[1] -0.35 , cannonPosition[2] - 8
+const targetsPosition = [0,3,-14]
 const targetWidth = 4
 //target spin on the Z axis
 const targetSpin = Math.PI * 1.7
 const targetsHeightDiff = 0.5
+const cannonBallScale = 0.4
   const [cannonBalls, setCannonBalls] = useState([])
   const mousePositionRef = useRef({ x: 0, y: 0 });
   
@@ -34,6 +40,9 @@ const targetsHeightDiff = 0.5
           mouseX={mousePositionRef.current.x}
           mouseY={mousePositionRef.current.y}
           position={ballPosition}
+          scale={cannonBallScale}
+          targetsPosition={targetsPosition}
+          targetWidth={targetWidth}
         ></CannonBall>,
       ]);
     };
