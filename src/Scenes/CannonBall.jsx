@@ -20,12 +20,9 @@ export default function CannonBall({ mouseX, mouseY, position, scale, targetsPos
 
     function applyImpulse(mouseX, mouseY)
     {   
-        console.log(mouseX)
-        console.log((width))
-        console.log(((0.5 * width - mouseX) / width))
         ballRef.current.applyImpulse(
             // { x: (mouseX - width / 2) / 10, y: (height /2 - mouseY ) / 10, z: -10 }
-        {x: ((0.5 * width - mouseX) / width) * targetWidth * targetsPosition[2] * 0.9 , y: (mouseY - height)/height * (targetsPosition[2] - 0.5 * 9.81) + targetsPosition[2] / 2.2, z: targetsPosition[2] * 1.05}
+        {x: ((0.5 * width - mouseX) / width) * 4 * targetsPosition[2] * 0.9 , y: (mouseY - height)/height * (targetsPosition[2] - 0.5 * 9.81) + targetsPosition[2] / 2.2, z: targetsPosition[2] * 1.05}
             )
     }
 

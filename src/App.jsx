@@ -80,10 +80,13 @@ const cameraPosition = [0,0,0]
     <div onClick={onClick}>
 
       <Canvas 
-        style={{ width: "100vw", height: "100vh" }}
+        style={{ width: "100vw", height: "100vh",
+        // background: "linear-gradient(180deg, #f08, #d0e)" 
+      }}
         shadows
         dpr={[1, 2]}
         camera={{position: cameraPosition}}
+        
         // camera={{position: cameraPosition}}
         
         // camera={{ fov: 50, position: [0, 0, 8] }}

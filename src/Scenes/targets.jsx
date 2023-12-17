@@ -1,6 +1,6 @@
 import { useRef, Suspense, useEffect, useState, useReducer } from "react";
 import "../App.css";
-
+import {motion} from 'framer-motion'
 import { Canvas, useFrame, useThree,  } from "@react-three/fiber";
 import {
   useGLTF,
@@ -67,8 +67,17 @@ return state}
 
 
 function Target({position, targetsWidth, targetsHeightDiff, targetSpin}) {
-  const text1 = <div>Words here</div>
-  const text2= <div>Seconds words here</div>
+  const htmlPosition = [-.5, 0,1]
+  const textStyle = {color: "white"}
+  const textProps = {textStyle, initial: { scale: 0 },
+  animate:{ rotate: 360, scale: 1 },
+  transition:{
+    type: "spring",
+    stiffness: 260,
+    damping: 20
+  } }
+  const text1 = <motion.div {...textProps} >Words here</motion.div>
+  const text2= <motion.div {...textProps}>Seconds words here</motion.div>
   const [html1, setHtml1] = useState(<div></div>)
   const [html2, setHtml2] = useState(<div></div>)
   const [html3, setHtml3] = useState(<div></div>)
@@ -139,7 +148,7 @@ const [targetState, targetStateDispatch ] = useReducer(targetDispatch, {
               material-color={[1, 1, 8]}
               />
               </RigidBody>
-              <Html>
+              <Html position={htmlPosition}>
   {html2}
 </Html>
           </group>
@@ -161,7 +170,7 @@ const [targetState, targetStateDispatch ] = useReducer(targetDispatch, {
               material-color={[1, 1, 8]}
               />
                 </RigidBody>
-                <Html>
+                <Html position={htmlPosition}>
   {html3}
 </Html>
           </group>
@@ -184,7 +193,7 @@ const [targetState, targetStateDispatch ] = useReducer(targetDispatch, {
               material-color={[1, 1, 8]}
               />
               </RigidBody>
-              <Html>
+              <Html position={htmlPosition}>
   {html1}
 </Html>
           </group>
