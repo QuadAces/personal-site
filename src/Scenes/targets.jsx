@@ -6,7 +6,7 @@ import {
   useGLTF,
   Stage,
   OrthographicCamera,
-  OrbitControls, PerspectiveCamera
+  OrbitControls, PerspectiveCamera, Html
 } from "@react-three/drei";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { Perf } from "r3f-perf";
@@ -16,29 +16,73 @@ import { RigidBody } from "@react-three/rapier";
 
 function targetDispatch(state, action) {
 
-  if (action.hit == 'left') {
-    state.left.color = [2 * state.left.hit, 0,0]
-    state.left.hit += state.left.hit
-
-  } else if (action.hit == 'middle') {
-    state.middle.color = [2* state.middle.hit,0,0]
-    state.middle.hit += state.middle.hit
-
-  } else if (action.hit == 'right') {
-
-    state.right.color = [2* state.right.hit,0,0]
-    state.right.hit += state.right.hit
-
-
-  }
-return state
+if (state.hits == 3) {
+  //TODO: change entire scene thing.
 }
 
+  if (action.hit == 'left') {
+    state.left.color = [2 * state.left.hit, 1,1]
+    state.left.hit += state.left.hit
+    if (!state.text.has('left')) {
+state.hits += 0.5
+      if (state.hits == 1)
+state.setHtml1(state.text1)
+
+    } else {
+      state.setHtml1(state.text2)
+    }
+
+  } else if (action.hit == 'middle') {
+    state.middle.color = [2* state.middle.hit,1,1]
+    state.middle.hit += state.middle.hit
+    if (!state.text.has('middle')) {
+      state.hits += 0.5
+      if (state.hits == 1){
+state.setHtml2(state.text1)
+
+    } else {
+      state.setHtml2(state.text2)
+    }
+  }
+  } else if (action.hit == 'right') {
+
+    state.right.color = [2* state.right.hit,1,1]
+    state.right.hit += state.right.hit
+
+    if (!state.text.has('right')) {
+      state.hits += 0.5
+      if (state.hits == 1){
+state.setHtml3(state.text1)
+
+    } else {
+      state.setHtml3(state.text2)
+    }
+    }
+  }
+  console.log('hits')
+return state}
+
+
+
+
+
 function Target({position, targetsWidth, targetsHeightDiff, targetSpin}) {
+  const text1 = <div>Words here</div>
+  const text2= <div>Seconds words here</div>
+  const [html1, setHtml1] = useState(<div></div>)
+  const [html2, setHtml2] = useState(<div></div>)
+  const [html3, setHtml3] = useState(<div></div>)
 const [targetState, targetStateDispatch ] = useReducer(targetDispatch, {
-  left: {color: [1,0,0], hit: 1},
-  middle: {color: [1,0,0], hit: 1},
-  right: {color: [1,0,0], hit: 1},
+  left: {color: [1,0,0], hit: 1, text: ""},
+  middle: {color: [1,0,0], hit: 1, text: ""},
+  right: {color: [1,0,0], hit: 1, text: ""},
+  text: new Set(),
+  hits: 0,
+  setHtml1,
+  setHtml2,
+  setHtml3,
+  text1,
+  text2,
 })
 
 
@@ -78,7 +122,8 @@ const [targetState, targetStateDispatch ] = useReducer(targetDispatch, {
 
           <group  rotation={[Math.PI / 2, 0, 0]} position={[0,0,0]} >
             <RigidBody onCollisionEnter={() => {onCollisionHit(targetMiddle)}} {...rididBodyProps}>
-            <mesh geometry={targetNodes.Cylinder015.geometry} ref={targetMiddle}>
+            <mesh geometry={targetNodes.Cylinder015.geometry} ref={targetMiddle} 
+            >
               <meshStandardMaterial
               
               args={[targetMaterials["White.024"]]}
@@ -94,9 +139,12 @@ const [targetState, targetStateDispatch ] = useReducer(targetDispatch, {
               material-color={[1, 1, 8]}
               />
               </RigidBody>
+              <Html>
+  {html2}
+</Html>
           </group>
           <group rotation={[Math.PI / 2, 0, 0]} position={[targetsWidth, -targetsHeightDiff,0]} rotation-z={-targetSpin}>
-            <RigidBody {...rididBodyProps} onCollisionExit={() => {onCollisionHit(targetRight)}}>
+            <RigidBody {...rididBodyProps} onCollisionEnter={() => {onCollisionHit(targetRight)}}>
 
             <mesh geometry={targetNodes.Cylinder015.geometry} ref={targetRight}>
               <meshStandardMaterial
@@ -113,10 +161,13 @@ const [targetState, targetStateDispatch ] = useReducer(targetDispatch, {
               material-color={[1, 1, 8]}
               />
                 </RigidBody>
+                <Html>
+  {html3}
+</Html>
           </group>
 
           <group rotation={[Math.PI / 2, 0, 0]} position={[-targetsWidth,-targetsHeightDiff,0]} rotation-z={targetSpin}>
-            <RigidBody {...rididBodyProps} onCollisionExit={() => {onCollisionHit(targetLeft)}}>
+            <RigidBody {...rididBodyProps} onCollisionEnter={() => {onCollisionHit(targetLeft)}}>
 
             <mesh geometry={targetNodes.Cylinder015.geometry} ref={targetLeft}>
               <meshStandardMaterial
@@ -133,6 +184,9 @@ const [targetState, targetStateDispatch ] = useReducer(targetDispatch, {
               material-color={[1, 1, 8]}
               />
               </RigidBody>
+              <Html>
+  {html1}
+</Html>
           </group>
         
               </group>

@@ -11,11 +11,9 @@ import {useState, useEffect} from 'react'
 import { generateUUID } from "three/src/math/MathUtils";
 export default function Scene({trigger, cameraPosition}) {
  
-  //TODO: set cannon ball to come out of cannon
   //TODO: add cooldown
-  //TODO: change bloom on hit
   //TODO: set text on hit
-  //
+  //TODO: sounds on hit
 
 cameraPosition = [0,0,0]
 const cannonPosition = [0,-0.75,-0.25]
