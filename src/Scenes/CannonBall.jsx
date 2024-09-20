@@ -1,37 +1,61 @@
-import { useRef, useEffect } from "react"
-import { Html } from "@react-three/drei"
-import { RigidBody, } from "@react-three/rapier"
-import useWindowDimensions from "../Hooks/windowDimentions"
+import { useRef, useEffect, useState } from "react";
+import { Html } from "@react-three/drei";
+import { RigidBody } from "@react-three/rapier";
+import useWindowDimensions from "../Hooks/windowDimentions";
 
-export default function CannonBall({ mouseX, mouseY, position, scale, targetsPosition,targetWidth })
-{
-    const ballRef = useRef()
+export default function CannonBall({
+    mouseX,
+    mouseY,
+    position,
+    scale,
+    targetsPosition,
+    targetWidth,
+}) {
+    const [
+        mousePosition,
+        setMousePosition
+      ] = useState({ x: null, y: null });
+      useEffect(() => {
+        const updateMousePosition = ev => {
+          setMousePosition({ x: ev.clientX, y: ev.clientY });
+        };
+        window.addEventListener('mousemove', updateMousePosition);
+        return () => {
+          window.removeEventListener('mousemove', updateMousePosition);
+        };
+      }, []);
 
-    useEffect(() =>
-    {
-        requestAnimationFrame(() =>
-        {
+    const ballRef = useRef();
 
-          applyImpulse(mouseX, mouseY)
-        })
-    }, [])
+    useEffect(() => {
+        requestAnimationFrame(() => {
+            applyImpulse(mouseX, mouseY);
+        });
+    }, []);
 
-    const { height, width } = useWindowDimensions()
+    const { height, width } = useWindowDimensions();
 
-    function applyImpulse(mouseX, mouseY)
-    {   
+    function applyImpulse(mouseX, mouseY) {
+
+
+console.log(((mouseX - 0.5 * width) * 1), "HERE VERY IM,PORTANT");
+
+          
         ballRef.current.applyImpulse(
+
             // { x: (mouseX - width / 2) / 10, y: (height /2 - mouseY ) / 10, z: -10 }
-        {x: ((0.5 * width - mouseX) / width) * 4 * targetsPosition[2] * 0.9 , y: (mouseY - height)/height * (targetsPosition[2] - 0.5 * 9.81) + targetsPosition[2] / 2.2, z: targetsPosition[2] * 1.05}
-            )
+            {
+                x: ((mouseX - 0.5 * width) / 30),
+                y: ((mouseY - height) / height) * targetsPosition[2] - 4.5,
+                z: targetsPosition[2] * 1.05,
+            }
+        );
     }
 
     return (
         <>
-            
             <RigidBody
-        position={position}
-
+                position={position}
                 ref={ballRef}
                 name={Math.random()}
                 colliders={"ball"}
@@ -41,12 +65,15 @@ export default function CannonBall({ mouseX, mouseY, position, scale, targetsPos
                 linearDamping={1}
                 angularDamping={1}
             >
-                <mesh castShadow scale={[scale,scale,scale]} position={position}>
+                <mesh
+                    castShadow
+                    scale={[scale, scale, scale]}
+                    position={position}
+                >
                     <sphereGeometry onClick={applyImpulse} />
                     <meshNormalMaterial color="orange" />
                 </mesh>
             </RigidBody>
-
         </>
-    )
+    );
 }
