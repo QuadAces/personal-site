@@ -21,7 +21,7 @@ if (state.hits == 3) {
 }
 
   if (action.hit == 'left') {
-    state.left.color = [2 * state.left.hit, 1,1]
+    state.left.color = [4, 0,0]
     state.left.hit += state.left.hit
     if (!state.text.has('left')) {
 state.hits += 0.5
@@ -33,7 +33,7 @@ state.setHtml1(state.text1)
     }
 
   } else if (action.hit == 'middle') {
-    state.middle.color = [2* state.middle.hit,1,1]
+    state.middle.color = [4 ,0,0]
     state.middle.hit += state.middle.hit
     if (!state.text.has('middle')) {
       state.hits += 0.5
@@ -46,7 +46,7 @@ state.setHtml2(state.text1)
   }
   } else if (action.hit == 'right') {
 
-    state.right.color = [2* state.right.hit,1,1]
+    state.right.color = [4,0,0]
     state.right.hit += state.right.hit
 
     if (!state.text.has('right')) {

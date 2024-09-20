@@ -11,19 +11,16 @@ export default function CannonBall({
     targetsPosition,
     targetWidth,
 }) {
-    const [
-        mousePosition,
-        setMousePosition
-      ] = useState({ x: null, y: null });
-      useEffect(() => {
-        const updateMousePosition = ev => {
-          setMousePosition({ x: ev.clientX, y: ev.clientY });
+    const [mousePosition, setMousePosition] = useState({ x: null, y: null });
+    useEffect(() => {
+        const updateMousePosition = (ev) => {
+            setMousePosition({ x: ev.clientX, y: ev.clientY });
         };
-        window.addEventListener('mousemove', updateMousePosition);
+        window.addEventListener("mousemove", updateMousePosition);
         return () => {
-          window.removeEventListener('mousemove', updateMousePosition);
+            window.removeEventListener("mousemove", updateMousePosition);
         };
-      }, []);
+    }, []);
 
     const ballRef = useRef();
 
@@ -36,16 +33,12 @@ export default function CannonBall({
     const { height, width } = useWindowDimensions();
 
     function applyImpulse(mouseX, mouseY) {
+        console.log((mouseX - 0.5 * width) * 1, "HERE VERY IM,PORTANT");
 
-
-console.log(((mouseX - 0.5 * width) * 1), "HERE VERY IM,PORTANT");
-
-          
         ballRef.current.applyImpulse(
-
             // { x: (mouseX - width / 2) / 10, y: (height /2 - mouseY ) / 10, z: -10 }
             {
-                x: ((mouseX - 0.5 * width) / 30),
+                x: (mouseX - 0.5 * width) / 30,
                 y: ((mouseY - height) / height) * targetsPosition[2] - 4.5,
                 z: targetsPosition[2] * 1.05,
             }
