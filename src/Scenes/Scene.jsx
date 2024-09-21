@@ -9,6 +9,7 @@ import CannonBall from "./CannonBall";
 import { Physics, RigidBody } from "@react-three/rapier";
 import {useState, useEffect} from 'react'
 import { generateUUID } from "three/src/math/MathUtils";
+import useWindowDimensions from "../Hooks/windowDimentions";
 export default function Scene({trigger, cameraPosition}) {
  
   //TODO: add cooldown
@@ -19,8 +20,14 @@ cameraPosition = [0,0,0]
 const cannonPosition = [0,-0.75,-0.25]
 const ballPosition = [cannonPosition[0],cannonPosition[1],cannonPosition[2]]
 //cannonPosition[0] + 3, cannonPosition[1] -0.35 , cannonPosition[2] - 8
+const {height, width} = useWindowDimensions()
+
+const [targetWidth, setTargetWidth] = useState(width / 150)
 const targetsPosition = [0,8,-18]
-const targetWidth = 8
+useEffect(() => {
+  setTargetWidth(width / 150)
+}, [width])
+
 //target spin on the Z axis
 const targetSpin = Math.PI * 1.7
 const targetsHeightDiff = 0.5
