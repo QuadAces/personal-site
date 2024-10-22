@@ -24,37 +24,51 @@ function targetDispatch(state, action) {
     if (action.hit == "left") {
         state.left.color = [4, 0, 0];
         state.left.hit += state.left.hit;
-        if (!state.text.has("left")) {
+        if (!state.left.text) {
+            if (state.hits == 0)  {
+                state.setHtml1(state.text1);
+                state.left.text = true;
+            } else if (state.hits == 1) {   
+                state.setHtml1(state.text2);
+                state.left.text = true;
+            }
             state.hits += 0.5;
-            if (state.hits == 1) state.setHtml1(state.text1);
-        } else {
-            state.setHtml1(state.text2);
+
         }
     } else if (action.hit == "middle") {
         state.middle.color = [4, 0, 0];
         state.middle.hit += state.middle.hit;
-        if (!state.text.has("middle")) {
-            state.hits += 0.5;
-            if (state.hits == 1) {
+        if (!state.middle.text) {
+            if (state.hits == 0)  {
                 state.setHtml2(state.text1);
-            } else {
+                state.middle.text = true;
+            } else if (state.hits == 1) {   
                 state.setHtml2(state.text2);
+                state.middle.text = true;
             }
+            state.hits += 0.5;
         }
     } else if (action.hit == "right") {
         state.right.color = [4, 0, 0];
         state.right.hit += state.right.hit;
 
-        if (!state.text.has("right")) {
-            state.hits += 0.5;
-            if (state.hits == 1) {
+        if (!state.right.text) {
+            if (state.hits == 0)  {
                 state.setHtml3(state.text1);
-            } else {
+                state.right.text = true;
+            } else if (state.hits == 1) {   
                 state.setHtml3(state.text2);
+                state.right.text = true;
             }
+            state.hits += 0.5;
+            
+            
+
         }
-    }
-    console.log("hits");
+    } 
+    
+    console.log(state.hits, "HITS ARE HERE");
+    
     return state;
 }
 
@@ -72,7 +86,7 @@ function Target({ position, targetsWidth, targetsHeightDiff, targetSpin }) {
         },
     };
     const text1 = <motion.div {...textProps}>Words here</motion.div>;
-    const text2 = <motion.div {...textProps}>Seconds words here</motion.div>;
+    const text2 = <motion.div className="" {...textProps}>Seconds words here</motion.div>;
     const [html1, setHtml1] = useState(<div></div>);
     const [html2, setHtml2] = useState(<div></div>);
     const [html3, setHtml3] = useState(<div></div>);

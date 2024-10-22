@@ -38,7 +38,7 @@ export default function CannonBall({
         ballRef.current.applyImpulse(
             // { x: (mouseX - width / 2) / 10, y: (height /2 - mouseY ) / 10, z: -10 }
             {
-                x: (mouseX - 0.5 * width) / 30,
+                x: (mouseX - 0.5 * width) / 28,
                 y: ((mouseY - height) / height) * targetsPosition[2] - 4.5,
                 z: targetsPosition[2] * 1.05,
             }
