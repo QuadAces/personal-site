@@ -53,6 +53,7 @@ export default function CannonBall({
                 name={Math.random()}
                 colliders={"ball"}
                 mass={2}
+                scale={1}
                 restitution={0.2}
                 friction={10}
                 linearDamping={1}
